@@ -431,6 +431,8 @@ func extractFeatureIntoSnapshot(feature Feature, snapshot *TemperatureSnapshot) 
 	case "heating.secondaryCircuit.sensors.temperature.supply":
 		snapshot.SecondarySupplyTemp = getFloatValue(feature.Properties)
 
+//RS delete ???
+// SecondaryReturnTemp, den Wert gibt es nicht in der API
 	// dashboard: primarySupplyTemp: find(['heating.primaryCircuit.sensors.temperature.supply']), Lufteintrittstemperatur
 	// NOTE: Confusing mapping due to existing database fields (see types.go / db.go)
 	// This actually represents air intake temperature for heat pumps
@@ -659,12 +661,14 @@ func calculateDerivedValues(snapshot *TemperatureSnapshot) {
 
 	var supplyTemp, returnTemp *float64
 
+//RS ReturnTemp
 	if hasHotWaterBuffer {
 		// Mit HW-Puffer: Sekundärkreis Spreizung (see dashboard_render_engine)
 		// Dashboard uses: heating.secondaryCircuit.sensors.temperature.supply
-		// which maps to our SecondarySupplyTemp
+		// which maps to our SecondarySupplyTemp + ReturnTemp
 		if snapshot.SecondarySupplyTemp != nil {
 			supplyTemp = snapshot.SecondarySupplyTemp
+			returnTemp = snapshot.ReturnTemp
 		}
 	} else {
 		// Ohne HW-Puffer: Heizkreis Spreizung (see dashboard_render_engine)
@@ -672,12 +676,8 @@ func calculateDerivedValues(snapshot *TemperatureSnapshot) {
 		// which maps to our PrimarySupplyTemp + ReturnTemp
 		if snapshot.PrimarySupplyTemp != nil {
 			supplyTemp = snapshot.PrimarySupplyTemp
+			returnTemp = snapshot.ReturnTemp
 		}
-	}
-
-	// returnTemp always same for both cases
-	if snapshot.ReturnTemp != nil {
-		returnTemp = snapshot.ReturnTemp
 	}
 
 	// Calculate thermal power if we have all required values (only if not already set from fallback)
