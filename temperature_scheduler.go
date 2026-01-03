@@ -541,7 +541,7 @@ func extractFeatureIntoSnapshot(feature Feature, snapshot *TemperatureSnapshot) 
 		snapshot.CirculationPumpActive = getPumpStatus(feature.Properties)
 	case "heating.dhw.pumps.circulation":
 		snapshot.DHWPumpActive = getPumpStatus(feature.Properties)
-	case "heating.pumps.primary":
+	case "heating.boiler.pumps.internal":  // parameter "heating.pumps.primary" not defined in API
 		snapshot.InternalPumpActive = getPumpStatus(feature.Properties)
 
 	// Flow/Energy
@@ -553,7 +553,7 @@ func extractFeatureIntoSnapshot(feature Feature, snapshot *TemperatureSnapshot) 
 		snapshot.FourWayValve = getStringValue(feature.Properties)
 	case "heating.burners.0.modulation":
 		snapshot.BurnerModulation = getFloatValue(feature.Properties)
-	case "heating.secondaryHeatGenerator.status":
+	case "heating.secondaryHeatGenerator.status":  // migth have no properties
 		snapshot.SecondaryHeatGeneratorStatus = getStringValue(feature.Properties)
 	}
 }
