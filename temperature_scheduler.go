@@ -414,13 +414,11 @@ func extractFeatureIntoSnapshot(feature Feature, snapshot *TemperatureSnapshot) 
 	case "heating.sensors.temperature.supply":
 		snapshot.SupplyTemp = getFloatValue(feature.Properties)
 
-	// Heating circuits 0-3: Store in both legacy fields (backward compat) and new explicit fields
+	// Heating circuits 0-3: Store in new explicit fields
 	// dashboard: supplyTemp: find(['heating.circuits.0.sensors.temperature.supply']), Gemeinsame Vorlauftemperatur IDU (auch Vorlauf 1. Heizkreis)
 	case "heating.circuits.0.sensors.temperature.supply":
-		//snapshot.PrimarySupplyTemp = getFloatValue(feature.Properties)         // DEPRECATED: Legacy (use HeatingCircuit0SupplyTemp)
 		snapshot.HeatingCircuit0SupplyTemp = getFloatValue(feature.Properties) // Preferred: Explicit heating circuit 0
 	case "heating.circuits.1.sensors.temperature.supply":
-		//snapshot.SecondarySupplyTemp = getFloatValue(feature.Properties)       // DEPRECATED: Legacy (use HeatingCircuit1SupplyTemp)
 		snapshot.HeatingCircuit1SupplyTemp = getFloatValue(feature.Properties) // Preferred: Explicit heating circuit 1
 	case "heating.circuits.2.sensors.temperature.supply":
 		snapshot.HeatingCircuit2SupplyTemp = getFloatValue(feature.Properties)
@@ -689,14 +687,16 @@ func calculateDerivedValues(snapshot *TemperatureSnapshot) {
 			}
 		}
 
+		snapshot.HeatingCircuit0SupplyTemp = deltaT // fits for systems w / w/o buffer
+		
 		// Calculate deltaT for each heating circuit individually
 		// NOTE: All circuits share the same return sensor, so these represent
 		// the temperature spread from each circuit's supply to the shared return
 		if snapshot.ReturnTemp != nil {
-			if snapshot.HeatingCircuit0SupplyTemp != nil {
-				deltaT0 := *snapshot.HeatingCircuit0SupplyTemp - *snapshot.ReturnTemp
-				snapshot.HeatingCircuit0DeltaT = &deltaT0
-			}
+//			if snapshot.HeatingCircuit0SupplyTemp != nil {
+//				deltaT0 := *snapshot.HeatingCircuit0SupplyTemp - *snapshot.ReturnTemp
+//				snapshot.HeatingCircuit0DeltaT = &deltaT0
+//			}
 			if snapshot.HeatingCircuit1SupplyTemp != nil {
 				deltaT1 := *snapshot.HeatingCircuit1SupplyTemp - *snapshot.ReturnTemp
 				snapshot.HeatingCircuit1DeltaT = &deltaT1
