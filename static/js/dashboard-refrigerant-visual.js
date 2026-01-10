@@ -28,7 +28,7 @@ function renderRefrigerantCircuitVisual(keyFeatures) {
         '/static/img/vitocal/Kaeltekreislauf%20ein.jpg' : '/static/img/vitocal/Kaeltekreislauf%20aus.jpg';
 	if ( compressorActive && keyFeatures?.fourWayValve && 
 		(keyFeatures.fourWayValve.value === 'climatCircuitTwoDefrost' || keyFeatures.fourWayValve.value === 'defrost')) {
-        baseImage = '/static/img/vitocal/Kaeltekreislauf%20tau.jpg';
+        baseImage = '/static/img/vitocal/Kaeltekreislauf%20abtau.jpg';
     }
 
     // Determine component states
