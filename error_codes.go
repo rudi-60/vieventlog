@@ -72,7 +72,7 @@ var statusCodes = map[string]string{
 	"S.115": "4/3-Wege-Ventil in Position Trinkwassererwaermung",
 	"S.116": "4/3-Wege-Ventil in Position Heiz-/Kuehlkreis 1",
 	"S.117": "4/3-Wege-Ventil in Position Heiz-/Kuehlkreis 2",
-	"S.118": "4/3-Wege-Ventil in Position Integrierter Pufferspeicher",
+	"S.118": "4/3-Wege-Ventil in Position Heiz-/Kuehl- Pufferspeicher",
 	"S.119": "Verdichter-Mindestlaufzeit",
 	"S.120": "Smart Grid: Normalbetrieb aktiv",
 	"S.121": "Smart Grid: Empfohlener Betrieb aktiv",
