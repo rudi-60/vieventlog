@@ -430,6 +430,8 @@ function loadSelectedFields() {
         // Only replace current selection if at least one saved field is actually available
         const validFields = parsed.filter(field => availableDataFields.has(field));
         if (validFields.length === 0) return;
+		// user selected fields only
+		selectedFields.clear(); 
         validFields.forEach(field => selectedFields.add(field));
         console.log('Loaded fields from localStorage');
     } catch (e) {
